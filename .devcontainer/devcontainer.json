@@ -1,5 +1,18 @@
 {
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
+  
+  "features": {
+    // Устанавливает Java (необходима для Gradle и Android SDK)
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "17", // Flutter рекомендует Java 17 для современных Gradle-плагинов
+      "jdkDistro": "ms"
+    },
+    // Устанавливает Android SDK Command-line tools
+    "ghcr.io/devcontainers/features/android-sdk:1": {
+      "version": "latest"
+    }
+  },
+
   "customizations": {
     "vscode": {
       "extensions": [
@@ -8,9 +21,13 @@
       ]
     }
   },
-  "postCreateCommand": "git clone https://github.com/flutter/flutter.git -b stable /home/vscode/flutter",
+
+  // Оптимизированная команда: качает Flutter и сразу принимает лицензии Android
+  "postCreateCommand": "git clone https://github.com/flutter/flutter.git -b stable /home/vscode/flutter && /home/vscode/flutter/bin/flutter doctor --android-licenses",
+
   "remoteEnv": {
     "PATH": "${containerEnv:PATH}:/home/vscode/flutter/bin"
   },
+  
   "remoteUser": "vscode"
 }
